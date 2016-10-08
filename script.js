@@ -5,11 +5,23 @@ window.onload=function(){
 		W=window.innerWidth,
 		H=window.innerHeight;
 	
+	var jugadores=[new Jugador("izquierda"), new Jugador("derecha")];
 	var pelotita=new Pelota();
 
-	var jugadores[]=new Jugador();
 
 	setInterval(dibujar,1);
+	
+	function Jugador(lado){
+		this.x=(lado=="izquierda")?0:W-40;
+		this.y=H/2;
+		this.ancho=20;
+		this.largo=150;
+		this.color="#FF0000";
+		this.dibujar=function(){
+			ctx.fillStyle=this.color;
+			ctx.fillRect(this.x,this.y,this.ancho,this.largo);
+		}
+	}
 	function Pelota(){
 		this.x=W/2;
 		this.y=H/2;
