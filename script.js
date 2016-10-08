@@ -4,22 +4,44 @@ window.onload=function(){
 		ctx=canvas.getContext("2d"),
 		W=window.innerWidth,
 		H=window.innerHeight;
-	
-	var jugadores=[new Jugador("izquierda"), new Jugador("derecha")];
+	canvas.width=W;
+	canvas.height=H;
+	var jugadores=[new Jugador("izquierda"), 
+					new Jugador("derecha")];
+	var movimientos={
+		p1:{arriba:false,abajo:false},
+		p2:{arriba:false,abajo:false}
+	};
 	var pelotita=new Pelota();
-
 
 	setInterval(dibujar,1);
 	
 	function Jugador(lado){
-		this.x=(lado=="izquierda")?0:W-40;
-		this.y=H/2;
-		this.ancho=20;
+		this.x=(lado=="izquierda")?0:W-60;
+		this.y=300;
+		this.ancho=60;
 		this.largo=150;
 		this.color="#FF0000";
+		this.recorrido=5;
 		this.dibujar=function(){
 			ctx.fillStyle=this.color;
 			ctx.fillRect(this.x,this.y,this.ancho,this.largo);
+		}
+		this.mover=function(){
+			if(this.lado=="izquierda"){
+				if(movimientos.p1.arriba){
+					this.y=this.y+recorrido;
+				}else{
+					this.y=this.y-recorrido;
+				}
+			}
+			if(this.lado=="derecha"){
+				if(movimientos.p2.arriba){
+					this.y=this.y+this.recorrido;
+				}else{
+					this.y=this.y-this.recorrido;
+				}
+			}
 		}
 	}
 	function Pelota(){
@@ -36,18 +58,15 @@ window.onload=function(){
 	}
 	function dibujar(){
 		ctx.globalCompositeOperation = "source-over";
-		canvas.width=W;
-		canvas.height=H;
 		ctx.fillStyle="#000000";
 		ctx.fillRect(0,0,W,H);
-		ctx.fillStyle="#FF0000";
-		ctx.fillRect(0,360,40,170);
-		ctx.fillStyle="#FF0000";
-		ctx.fillRect(W-40,360,40,150);
+		for(var i=0;i<jugadores.length;i++){
+			jugadores[i].dibujar();
+		}
 		pelotita.dibujar();
 	}
 	function teclaPresionada(evento){
-		console.log(evento.keyCode);
+		//console.log(evento.keyCode);
 		var codigo=evento.keyCode;
 		switch(codigo){
 			case 87:
@@ -65,7 +84,7 @@ window.onload=function(){
 		}
 	}
 	function teclaLevantada(evento){
-		console.log(evento.keyCode);
+		//console.log(evento.keyCode);
 		var codigo=evento.keyCode;
 		switch(codigo){
 			case 87:
