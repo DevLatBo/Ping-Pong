@@ -22,23 +22,26 @@ window.onload=function(){
 		this.ancho=60;
 		this.largo=150;
 		this.color="#FF0000";
-		this.recorrido=5;
+		this.recorrido=3;
 		this.dibujar=function(){
 			ctx.fillStyle=this.color;
 			ctx.fillRect(this.x,this.y,this.ancho,this.largo);
 		}
 		this.mover=function(){
 			if(this.lado=="izquierda"){
-				if(movimientos.p1.arriba){
-					this.y=this.y+recorrido;
-				}else{
-					this.y=this.y-recorrido;
-				}
-			}
-			if(this.lado=="derecha"){
-				if(movimientos.p2.arriba){
+				console.log(this.y+"izquierda");
+				if(movimientos.p1.abajo){
 					this.y=this.y+this.recorrido;
-				}else{
+				}
+				if(movimientos.p1.arriba){
+					this.y=this.y-this.recorrido;
+				}
+			}else{
+				console.log(this.y);
+				if(movimientos.p2.abajo){
+					this.y=this.y+this.recorrido;
+				}
+				if(movimientos.p2.arriba){
 					this.y=this.y-this.recorrido;
 				}
 			}
@@ -62,42 +65,51 @@ window.onload=function(){
 		ctx.fillRect(0,0,W,H);
 		for(var i=0;i<jugadores.length;i++){
 			jugadores[i].dibujar();
+			jugadores[i].mover();
 		}
 		pelotita.dibujar();
 	}
 	function teclaPresionada(evento){
 		//console.log(evento.keyCode);
-		var codigo=evento.keyCode;
+		var codigo=evento.which;
 		switch(codigo){
 			case 87:
 				console.log("arriba jugador 2");
+				movimientos.p2.arriba=true;
 				break;
 			case 83:
 				console.log("abajo jugador 2");
+				movimientos.p2.abajo=true;
 				break;
 			case 38:
 				console.log("arriba jugador 1");
+				movimientos.p1.arriba=true;
 				break;
 			case 40:
 				console.log("abajo jugador 1");
+				movimientos.p1.abajo=true;
 				break;
 		}
 	}
 	function teclaLevantada(evento){
 		//console.log(evento.keyCode);
-		var codigo=evento.keyCode;
+		var codigo=evento.which;
 		switch(codigo){
 			case 87:
 				console.log("arriba jugador 2 [DETENIDO]");
+				movimientos.p2.arriba=false;
 				break;
 			case 83:
 				console.log("abajo jugador 2 [DETENIDO]");
+				movimientos.p2.abajo=false;
 				break;
 			case 38:
 				console.log("arriba jugador 1 [DETENIDO]");
+				movimientos.p1.arriba=false;
 				break;
 			case 40:
 				console.log("abajo jugador 1 [DETENIDO]");
+				movimientos.p1.abajo=false;
 				break;
 		}
 	}
