@@ -17,7 +17,8 @@ window.onload=function(){
 	setInterval(dibujar,1);
 	
 	function Jugador(lado){
-		this.x=(lado=="izquierda")?0:W-60;
+		this.lado = lado;
+                this.x=(lado=="izquierda")?0:W-60;
 		this.y=300;
 		this.ancho=60;
 		this.largo=150;
