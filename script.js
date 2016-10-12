@@ -18,7 +18,7 @@ window.onload=function(){
 	
 	function Jugador(lado){
 		this.lado = lado;
-                this.x=(lado=="izquierda")?0:W-60;
+        this.x=(lado=="izquierda")?0:W-60;
 		this.y=300;
 		this.ancho=60;
 		this.largo=150;
@@ -53,11 +53,17 @@ window.onload=function(){
 		this.y=H/2;
 		this.size=10;
 		this.style="#FFFFFF";
+		this.dir_x=decidirDireccion(0,1)==0?6:-6;
+		this.dir_y=decidirDireccion(0,1)==0?6:-6;
 		this.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
 			ctx.arc(this.x,this.y,this.size,10,0,Math.PI*2);
 			ctx.fill();
+		};
+		this.mover=function(){
+			this.x=this.x+this.dir_x;
+			this.y=this.y+this.dir_y;
 		}
 	}
 	function dibujar(){
@@ -69,6 +75,7 @@ window.onload=function(){
 			jugadores[i].mover();
 		}
 		pelotita.dibujar();
+		pelotita.mover();
 	}
 	function teclaPresionada(evento){
 		//console.log(evento.keyCode);
@@ -82,11 +89,11 @@ window.onload=function(){
 				console.log("abajo jugador 2");
 				movimientos.p2.abajo=true;
 				break;
-			case 38:
+			case 79:
 				console.log("arriba jugador 1");
 				movimientos.p1.arriba=true;
 				break;
-			case 40:
+			case 75:
 				console.log("abajo jugador 1");
 				movimientos.p1.abajo=true;
 				break;
@@ -104,15 +111,18 @@ window.onload=function(){
 				console.log("abajo jugador 2 [DETENIDO]");
 				movimientos.p2.abajo=false;
 				break;
-			case 38:
+			case 79:
 				console.log("arriba jugador 1 [DETENIDO]");
 				movimientos.p1.arriba=false;
 				break;
-			case 40:
+			case 75:
 				console.log("abajo jugador 1 [DETENIDO]");
 				movimientos.p1.abajo=false;
 				break;
 		}
+	}
+	function decidirDireccion(min,max){
+  		return Math.round(Math.random() * (max - min)) + min;
 	}
 	document.addEventListener("keydown",teclaPresionada);
 	document.addEventListener("keyup",teclaLevantada);
