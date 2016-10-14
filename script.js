@@ -8,6 +8,7 @@ window.onload=function(){
 	canvas.height=H;
 	var jugadores=[new Jugador("izquierda"), 
 					new Jugador("derecha")];
+	var marcador=[0,0];
 	var movimientos={
 		p1:{arriba:false,abajo:false},
 		p2:{arriba:false,abajo:false}
@@ -30,7 +31,6 @@ window.onload=function(){
 		}
 		this.mover=function(){
 			if(this.lado=="izquierda"){
-				console.log(this.y+"izquierda");
 				if(movimientos.p1.abajo){
 					this.y=this.y+this.recorrido;
 				}
@@ -38,7 +38,6 @@ window.onload=function(){
 					this.y=this.y-this.recorrido;
 				}
 			}else{
-				console.log(this.y);
 				if(movimientos.p2.abajo){
 					this.y=this.y+this.recorrido;
 				}
@@ -53,8 +52,8 @@ window.onload=function(){
 		this.y=H/2;
 		this.size=15;
 		this.style="#FFFFFF";
-		this.dir_x=decidirDireccion(0,1)==0?15:-15;
-		this.dir_y=decidirDireccion(0,1)==0?15:-15;
+		this.dir_x=decidirDireccion(0,1)==0?12:-12;
+		this.dir_y=decidirDireccion(0,1)==0?12:-12;
 		this.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
@@ -65,18 +64,18 @@ window.onload=function(){
 			this.x=this.x+this.dir_x;
 			this.y=this.y+this.dir_y;
 			if(this.y<0){
-				//this.y=10;
 				this.dir_y=this.dir_y*(-1);
 			}
 			if(this.y>H-this.size){
-				//this.y=H-this.size;
 				this.dir_y=this.dir_y*(-1);
 			}
 			if(this.x<0){
 				this.dir_x=this.dir_x*(-1);
+				marcador[1]++;
 			}
 			if(this.x>W-this.size){
 				this.dir_x=this.dir_x*(-1);
+				marcador[0]++;
 			}
 		}
 	}
@@ -84,6 +83,12 @@ window.onload=function(){
 		ctx.globalCompositeOperation = "source-over";
 		ctx.fillStyle="#000000";
 		ctx.fillRect(0,0,W,H);
+
+		ctx.font="120px Helvetica";
+		ctx.fillStyle="#FFFFFF";
+		ctx.fillText(""+marcador[0],300,100);
+		ctx.fillText(""+marcador[1],1100,100);
+
 		for(var i=0;i<jugadores.length;i++){
 			jugadores[i].dibujar();
 			jugadores[i].mover();
