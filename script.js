@@ -51,9 +51,9 @@ window.onload=function(){
 		this.x=W/2;
 		this.y=H/2;
 		this.size=15;
-		this.style="#FFFFFF";
-		this.dir_x=decidirDireccion(0,1)==0?12:-12;
-		this.dir_y=decidirDireccion(0,1)==0?12:-12;
+		this.style="rgba(255,255,255,0.9)";
+		this.dir_x=decidirDireccion(0,1)==0?10:-10;
+		this.dir_y=decidirDireccion(0,1)==0?10:-10;
 		this.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
@@ -69,13 +69,23 @@ window.onload=function(){
 			if(this.y>H-this.size){
 				this.dir_y=this.dir_y*(-1);
 			}
-			if(this.x<0){
+			var jugador1=jugadores[0];
+			var jugador2=jugadores[1];
+			if((this.x>jugador1.x && this.x<jugador1.x+jugador1.ancho) && (this.y>jugador1.y && this.y<jugador1.y+jugador1.largo)){
 				this.dir_x=this.dir_x*(-1);
+			}
+			if((this.x>jugador2.x && this.x<jugador2.x+jugador2.ancho) && (this.y>jugador2.y && this.y<jugador2.y+jugador2.largo)){
+				this.dir_x=this.dir_x*(-1);
+			}
+			if(this.x<0){
 				marcador[1]++;
+				this.x=W/2;
+				this.y=H/2;
 			}
 			if(this.x>W-this.size){
-				this.dir_x=this.dir_x*(-1);
 				marcador[0]++;
+				this.x=W/2;
+				this.y=H/2;
 			}
 		}
 	}
@@ -101,19 +111,19 @@ window.onload=function(){
 		var codigo=evento.which;
 		switch(codigo){
 			case 79:
-				console.log("arriba jugador 2");
+				//console.log("arriba jugador 2");
 				movimientos.p2.arriba=true;
 				break;
 			case 75:
-				console.log("abajo jugador 2");
+				//console.log("abajo jugador 2");
 				movimientos.p2.abajo=true;
 				break;
 			case 87:
-				console.log("arriba jugador 1");
+				//console.log("arriba jugador 1");
 				movimientos.p1.arriba=true;
 				break;
 			case 83:
-				console.log("abajo jugador 1");
+				//console.log("abajo jugador 1");
 				movimientos.p1.abajo=true;
 				break;
 		}
@@ -123,19 +133,19 @@ window.onload=function(){
 		var codigo=evento.which;
 		switch(codigo){
 			case 79:
-				console.log("arriba jugador 2 [DETENIDO]");
+				//console.log("arriba jugador 2 [DETENIDO]");
 				movimientos.p2.arriba=false;
 				break;
 			case 75:
-				console.log("abajo jugador 2 [DETENIDO]");
+				//console.log("abajo jugador 2 [DETENIDO]");
 				movimientos.p2.abajo=false;
 				break;
 			case 87:
-				console.log("arriba jugador 1 [DETENIDO]");
+				//console.log("arriba jugador 1 [DETENIDO]");
 				movimientos.p1.arriba=false;
 				break;
 			case 83:
-				console.log("abajo jugador 1 [DETENIDO]");
+				//console.log("abajo jugador 1 [DETENIDO]");
 				movimientos.p1.abajo=false;
 				break;
 		}
