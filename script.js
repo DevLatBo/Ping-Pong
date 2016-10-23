@@ -19,10 +19,10 @@ window.onload=function(){
 	
 	function Jugador(lado){
 		this.lado = lado;
-        this.x=(lado=="izquierda")?0:W-60;
-		this.y=300;
 		this.ancho=60;
 		this.largo=150;
+		this.x=(lado=="izquierda")?0:W-60;
+		this.y=generarNumero(0,H-this.largo);
 		this.color="#FF0000";
 		this.recorrido=9;
 		this.dibujar=function(){
@@ -52,8 +52,8 @@ window.onload=function(){
 		this.y=H/2;
 		this.size=15;
 		this.style="rgba(255,255,255,0.9)";
-		this.dir_x=decidirDireccion(0,1)==0?10:-10;
-		this.dir_y=decidirDireccion(0,1)==0?10:-10;
+		this.dir_x=generarNumero(0,1)==0?10:-10;
+		this.dir_y=generarNumero(0,1)==0?10:-10;
 		this.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
@@ -150,7 +150,7 @@ window.onload=function(){
 				break;
 		}
 	}
-	function decidirDireccion(min,max){
+	function generarNumero(min,max){
   		return Math.round(Math.random() * (max - min)) + min;
 	}
 	document.addEventListener("keydown",teclaPresionada);
