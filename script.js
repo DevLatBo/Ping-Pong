@@ -32,25 +32,25 @@ window.onload=function(){
 		this.mover=function(){
 			if(this.lado=="izquierda"){
 				if(movimientos.p1.abajo){
-					this.y=this.y+this.recorrido;
+					this.y=(this.y<H-this.largo)?this.y+this.recorrido:this.y;
 				}
 				if(movimientos.p1.arriba){
-					this.y=this.y-this.recorrido;
+					this.y=(this.y>0)?this.y-this.recorrido:this.y;
 				}
 			}else{
 				if(movimientos.p2.abajo){
-					this.y=this.y+this.recorrido;
+					this.y=(this.y<H-this.largo)?this.y+this.recorrido:this.y;
 				}
 				if(movimientos.p2.arriba){
-					this.y=this.y-this.recorrido;
+					this.y=(this.y>0)?this.y-this.recorrido:this.y;
 				}
 			}
 		}
 	}
 	function Pelota(){
-		this.x=W/2;
-		this.y=H/2;
 		this.size=15;
+		this.x=W/2;
+		this.y=generarNumero(0,H-this.size);
 		this.style="rgba(255,255,255,0.9)";
 		this.dir_x=generarNumero(0,1)==0?10:-10;
 		this.dir_y=generarNumero(0,1)==0?10:-10;
@@ -80,12 +80,12 @@ window.onload=function(){
 			if(this.x<0){
 				marcador[1]++;
 				this.x=W/2;
-				this.y=H/2;
+				this.y=generarNumero(0,H-this.size);
 			}
 			if(this.x>W-this.size){
 				marcador[0]++;
 				this.x=W/2;
-				this.y=H/2;
+				this.y=generarNumero(0,H-this.size);
 			}
 		}
 	}
