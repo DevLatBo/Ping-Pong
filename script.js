@@ -52,8 +52,8 @@ window.onload=function(){
 		this.x=W/2;
 		this.y=generarNumero(0,H-this.size);
 		this.style="rgba(255,255,255,0.9)";
-		this.dir_x=generarNumero(0,1)==0?10:-10;
-		this.dir_y=generarNumero(0,1)==0?10:-10;
+		this.dir_x=generarNumero(0,1)==0?7:-7;
+		this.dir_y=generarNumero(0,1)==0?7:-7;
 		this.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
