@@ -17,6 +17,11 @@ window.onload=function(){
 
 	setInterval(dibujar,1);
 	
+	/*
+		Metodo jugador que es representado por cada una de las paletitas.
+		Movimiento de las paletas son de manera vertical cuyo control 
+		es que no pueda pasarse el limite de pantalla del navegador.
+	*/
 	function Jugador(lado){
 		this.lado = lado;
 		this.ancho=60;
@@ -47,6 +52,11 @@ window.onload=function(){
 			}
 		}
 	}
+	/*
+		La pelota que es un circulo color blanco tiene una direccion vertical u horizontal al mismo tiempo (direccion diagonal).
+		Cada rebote de la pelota a parte de sus paletas tambien es controlador por el limite superior e inferior de la 
+		pantalla del navegador.
+	*/
 	function Pelota(){
 		this.size=15;
 		this.x=W/2;
@@ -89,6 +99,10 @@ window.onload=function(){
 			}
 		}
 	}
+	/*
+		Simple metodo que consiste en dibujar pelota y movimiento de la misma, como tambien pintar posicion inicial
+		y movimiento de paletas.
+	*/
 	function dibujar(){
 		ctx.globalCompositeOperation = "source-over";
 		ctx.fillStyle="#000000";
@@ -106,6 +120,9 @@ window.onload=function(){
 		pelotita.dibujar();
 		pelotita.mover();
 	}
+	/*
+		Control de paletas por medio del teclado por ASCII (tecla presionada y levantada)
+	*/
 	function teclaPresionada(evento){
 		//console.log(evento.keyCode);
 		var codigo=evento.which;
@@ -150,6 +167,9 @@ window.onload=function(){
 				break;
 		}
 	}
+	/*
+		El valor de este metodo devolvera  un valor cuyo resultado afectara en la direccion de la pelota
+	*/
 	function generarNumero(min,max){
   		return Math.round(Math.random() * (max - min)) + min;
 	}
