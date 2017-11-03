@@ -62,8 +62,8 @@ window.onload=function(){
 		this.x=W/2;
 		this.y=generarNumero(0,H-this.size);
 		this.style="rgba(255,255,255,0.9)";
-		this.dir_x=generarNumero(0,1)==0?7:-7;
-		this.dir_y=generarNumero(0,1)==0?7:-7;
+		this.dir_x=generarNumero(0,1)==0?3:-3;
+		this.dir_y=generarNumero(0,1)==0?3:-3;
 		this.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
@@ -75,17 +75,21 @@ window.onload=function(){
 			this.y=this.y+this.dir_y;
 			if(this.y<0){
 				this.dir_y=this.dir_y*(-1);
+				reproducirSonido();
 			}
 			if(this.y>H-this.size){
 				this.dir_y=this.dir_y*(-1);
+				reproducirSonido();
 			}
 			var jugador1=jugadores[0];
 			var jugador2=jugadores[1];
 			if((this.x>jugador1.x && this.x<jugador1.x+jugador1.ancho) && (this.y>jugador1.y && this.y<jugador1.y+jugador1.largo)){
 				this.dir_x=this.dir_x*(-1);
+				reproducirSonido();
 			}
 			if((this.x>jugador2.x && this.x<jugador2.x+jugador2.ancho) && (this.y>jugador2.y && this.y<jugador2.y+jugador2.largo)){
 				this.dir_x=this.dir_x*(-1);
+				reproducirSonido();
 			}
 			if(this.x<0){
 				marcador[1]++;
@@ -172,6 +176,16 @@ window.onload=function(){
 	*/
 	function generarNumero(min,max){
   		return Math.round(Math.random() * (max - min)) + min;
+	}
+	function reproducirSonido(){
+		//document.getElementById('pelota').play();
+		var audio = document.getElementById('pelota');
+		if(audio.paused){
+			audio.play();
+		}else{
+			audio.pause();
+			audio.currentTime = 0;
+		}
 	}
 	document.addEventListener("keydown",teclaPresionada);
 	document.addEventListener("keyup",teclaLevantada);
