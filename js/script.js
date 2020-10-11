@@ -14,9 +14,8 @@ window.onload=function(){
 		p2:{arriba:false,abajo:false}
 	};
 	var pelotita=new Pelota();
-
 	setInterval(dibujar,1);
-
+	alert("test")
 	function Jugador(lado){
 		this.lado = lado;
 		this.ancho=60.5;
@@ -45,6 +44,8 @@ window.onload=function(){
 					this.y=(this.y>0)?this.y-this.recorrido:this.y;
 				}
 			}
+			console.log("posicion jugador1+"+this.x + " " + this.y)
+			console.log("posicion jugador2+"+this.x + " " + this.y)
 		}
 	}
 
@@ -66,10 +67,12 @@ window.onload=function(){
 			this.y=this.y+this.dir_y;
 			if(this.y<0){
 				this.dir_y *= (-1);
+				console.log("reboto arriba");
 				reproducirSonido();
 			}
 			if(this.y>H-this.size){
 				this.dir_y=this.dir_y*(-1);
+				console.log("reboto abajo")
 				reproducirSonido();
 			}
 			var jugador1=jugadores[0];
@@ -92,12 +95,20 @@ window.onload=function(){
                 }
 				reproducirSonido();
 			}
+			/*console.log("posicion pelota x: " + this.x)
+			console.log("posicion pelota y: " + this.y)
+			console.log("jugador ancho 1" + jugador2.ancho)
+			console.log("jugador ancho 2" + jugador1.ancho)*/
+
 			if(this.x<0){
+				alert("gano 1")
 				marcador[1]++;
 				this.x=W/2;
 				this.y=generarNumero(0,H-this.size);
 			}
-			if(this.x>W-this.size){
+			if(this.x>W){
+				alert("gano 0");
+				alert("ancho " + W + "posicion" +this.x + " dato: " + (W-this.size) )
 				marcador[0]++;
 				this.x=W/2;
 				this.y=generarNumero(0,H-this.size);
@@ -173,7 +184,6 @@ window.onload=function(){
 	}
 
 	function reproducirSonido(){
-
 		var audio = document.getElementById('pelota');
 		if(audio.paused){
 			audio.play();
