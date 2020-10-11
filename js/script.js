@@ -15,15 +15,14 @@ window.onload=function(){
 	};
 	var pelotita=new Pelota();
 	setInterval(dibujar,1);
-	alert("test")
 	function Jugador(lado){
 		this.lado = lado;
-		this.ancho=60.5;
+		this.ancho=60;
 		this.largo=150;
-		this.x=(lado=="izquierda")?0:W-60.5;
+		this.x=(lado=="izquierda")?0:W-60;
 		this.y=generarNumero(0,H-this.largo);
 		this.color="#FF0000";
-		this.recorrido=9;
+		this.recorrido=7;
 		this.dibujar=function(){
 			ctx.fillStyle=this.color;
 			ctx.fillRect(this.x,this.y,this.ancho,this.largo);
@@ -44,8 +43,6 @@ window.onload=function(){
 					this.y=(this.y>0)?this.y-this.recorrido:this.y;
 				}
 			}
-			console.log("posicion jugador1+"+this.x + " " + this.y)
-			console.log("posicion jugador2+"+this.x + " " + this.y)
 		}
 	}
 
@@ -54,8 +51,8 @@ window.onload=function(){
 		this.x=W/2;
 		this.y=generarNumero(0,H-this.size);
 		this.style="rgba(255,255,255,0.9)";
-		this.dir_x=generarNumero(0,1)==0?2:-2;
-		this.dir_y=generarNumero(0,1)==0?2:-2;
+		this.dir_x=generarNumero(0,1)==0?7:-7;
+		this.dir_y=generarNumero(0,1)==0?7:-7;
 		this.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
@@ -67,51 +64,30 @@ window.onload=function(){
 			this.y=this.y+this.dir_y;
 			if(this.y<0){
 				this.dir_y *= (-1);
-				console.log("reboto arriba");
-				reproducirSonido();
 			}
 			if(this.y>H-this.size){
 				this.dir_y=this.dir_y*(-1);
-				console.log("reboto abajo")
-				reproducirSonido();
 			}
 			var jugador1=jugadores[0];
 			var jugador2=jugadores[1];
-			if((this.x>=jugador1.x && this.x<=jugador1.x+jugador1.ancho) &&
-				(this.y>=jugador1.y && this.y<=jugador1.y+jugador1.largo)){
-                if(this.x > jugador1.x && this.x < (jugador1.x+jugador1.ancho)){
-                	this.dir_y *= (-1);
-				}else{
-                    this.dir_x *= (-1);
-                }
-				reproducirSonido();
+			
+			if((this.x - this.size < (jugador1.x+jugador1.ancho)) && (this.y >= jugador1.y && this.y <= (jugador1.largo + jugador1.y))){
+				this.dir_x *= (-1);
 			}
-			if((this.x>=jugador2.x && this.x<=jugador2.x+jugador2.ancho) &&
-				(this.y>=jugador2.y && this.y<=jugador2.y+jugador2.largo)){
-                if(this.x > jugador2.x && this.x < (jugador2.x+jugador2.ancho)){
-                    this.dir_y *= (-1);
-                }else{
-                    this.dir_x *= (-1);
-                }
-				reproducirSonido();
+			if((this.x + this.size >= jugador2.x) && (this.y >= jugador2.y && this.y <= (jugador2.largo + jugador2.y))){
+				this.dir_x *= (-1);
 			}
-			/*console.log("posicion pelota x: " + this.x)
-			console.log("posicion pelota y: " + this.y)
-			console.log("jugador ancho 1" + jugador2.ancho)
-			console.log("jugador ancho 2" + jugador1.ancho)*/
-
 			if(this.x<0){
-				alert("gano 1")
 				marcador[1]++;
 				this.x=W/2;
 				this.y=generarNumero(0,H-this.size);
+				reproducirSonido();
 			}
-			if(this.x>W){
-				alert("gano 0");
-				alert("ancho " + W + "posicion" +this.x + " dato: " + (W-this.size) )
+			if(this.x>W-this.size){
 				marcador[0]++;
 				this.x=W/2;
 				this.y=generarNumero(0,H-this.size);
+				reproducirSonido();
 			}
 		}
 	}
