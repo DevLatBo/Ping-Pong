@@ -72,9 +72,11 @@ window.onload=function(){
 			var jugador2=jugadores[1];
 			
 			if((this.x - this.size < (jugador1.x+jugador1.ancho)) && (this.y >= jugador1.y && this.y <= (jugador1.largo + jugador1.y))){
+				// Izquierda
 				this.dir_x *= (-1);
 			}
 			if((this.x + this.size >= jugador2.x) && (this.y >= jugador2.y && this.y <= (jugador2.largo + jugador2.y))){
+				// Derecha
 				this.dir_x *= (-1);
 			}
 			if(this.x<0){
