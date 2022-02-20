@@ -74,22 +74,22 @@ window.onload=function(){
 			if((this.x - this.size < (jugador1.x+jugador1.ancho)) && (this.y >= jugador1.y && this.y <= (jugador1.largo + jugador1.y))){
 				// Izquierda
 				this.dir_x *= (-1);
+				reproducirSonido();
 			}
 			if((this.x + this.size >= jugador2.x) && (this.y >= jugador2.y && this.y <= (jugador2.largo + jugador2.y))){
 				// Derecha
 				this.dir_x *= (-1);
+				reproducirSonido();
 			}
 			if(this.x<0){
 				marcador[1]++;
 				this.x=W/2;
 				this.y=generarNumero(0,H-this.size);
-				reproducirSonido();
 			}
 			if(this.x>W-this.size){
 				marcador[0]++;
 				this.x=W/2;
 				this.y=generarNumero(0,H-this.size);
-				reproducirSonido();
 			}
 		}
 	}
@@ -111,9 +111,8 @@ window.onload=function(){
 		pelotita.dibujar();
 		pelotita.mover();
 	}
-	/*
-		Control de paletas por medio del teclado por ASCII (tecla presionada y levantada)
-	*/
+	
+	//Control de paletas por medio del teclado por ASCII (tecla presionada y levantada)
 	function teclaPresionada(evento){
 		var codigo=evento.which;
 		switch(codigo){
