@@ -14,82 +14,85 @@ window.onload=function(){
 		p2:{arriba:false,abajo:false}
 	};
 	var pelotita=new Pelota();
+
 	setInterval(dibujar,1);
 	function Jugador(lado){
-		this.lado = lado;
-		this.ancho=60;
-		this.largo=150;
-		this.x=(lado=="izquierda")?0:W-60;
-		this.y=generarNumero(0,H-this.largo);
-		this.color="#FF0000";
-		this.recorrido=7;
-		this.dibujar=function(){
-			ctx.fillStyle=this.color;
-			ctx.fillRect(this.x,this.y,this.ancho,this.largo);
+		var jugador = this;
+		jugador.lado = lado;
+		jugador.ancho=60;
+		jugador.largo=150;
+		jugador.x=(lado=="izquierda")?0:W-60;
+		jugador.y=generarNumero(0,H-jugador.largo);
+		jugador.color="#FF0000";
+		jugador.recorrido=7;
+		jugador.dibujar=function(){
+			ctx.fillStyle=jugador.color;
+			ctx.fillRect(jugador.x,jugador.y,jugador.ancho,jugador.largo);
 		}
-		this.mover=function(){
-			if(this.lado=="izquierda"){
+		jugador.mover=function(){
+			if(jugador.lado=="izquierda"){
 				if(movimientos.p1.abajo){
-					this.y=(this.y<H-this.largo)?this.y+this.recorrido:this.y;
+					jugador.y=(jugador.y<H-jugador.largo)?jugador.y+jugador.recorrido:jugador.y;
 				}
 				if(movimientos.p1.arriba){
-					this.y=(this.y>0)?this.y-this.recorrido:this.y;
+					jugador.y=(jugador.y>0)?jugador.y-jugador.recorrido:jugador.y;
 				}
 			}else{
 				if(movimientos.p2.abajo){
-					this.y=(this.y<H-this.largo)?this.y+this.recorrido:this.y;
+					jugador.y=(jugador.y<H-jugador.largo)?jugador.y+jugador.recorrido:jugador.y;
 				}
 				if(movimientos.p2.arriba){
-					this.y=(this.y>0)?this.y-this.recorrido:this.y;
+					jugador.y=(jugador.y>0)?jugador.y-jugador.recorrido:jugador.y;
 				}
 			}
 		}
 	}
 
 	function Pelota(){
-		this.size=15;
-		this.x=W/2;
-		this.y=generarNumero(0,H-this.size);
-		this.style="rgba(255,255,255,0.9)";
-		this.dir_x=generarNumero(0,1)==0?7:-7;
-		this.dir_y=generarNumero(0,1)==0?7:-7;
-		this.dibujar=function(){
+		var pelota = this;
+		pelota.size=15;
+		pelota.x=W/2;
+		pelota.y=generarNumero(0,H-this.size);
+		pelota.style="rgba(255,255,255,0.9)";
+		pelota.dir_x=generarNumero(0,1)==0?7:-7;
+		pelota.dir_y=generarNumero(0,1)==0?7:-7;
+		pelota.dibujar=function(){
 			ctx.beginPath();
 			ctx.fillStyle=this.style;
 			ctx.arc(this.x,this.y,this.size,10,0,Math.PI*2);
 			ctx.fill();
 		};
-		this.mover=function(){
-			this.x=this.x+this.dir_x;
-			this.y=this.y+this.dir_y;
-			if(this.y<0){
-				this.dir_y *= (-1);
+		pelota.mover=function(){
+			pelota.x=pelota.x+pelota.dir_x;
+			pelota.y=pelota.y+pelota.dir_y;
+			if(pelota.y<0){
+				pelota.dir_y *= (-1);
 			}
-			if(this.y>H-this.size){
-				this.dir_y=this.dir_y*(-1);
+			if(pelota.y>H-pelota.size){
+				pelota.dir_y=pelota.dir_y*(-1);
 			}
 			var jugador1=jugadores[0];
 			var jugador2=jugadores[1];
 			
-			if((this.x - this.size < (jugador1.x+jugador1.ancho)) && (this.y >= jugador1.y && this.y <= (jugador1.largo + jugador1.y))){
+			if((pelota.x - pelota.size < (jugador1.x+jugador1.ancho)) && (pelota.y >= jugador1.y && pelota.y <= (jugador1.largo + jugador1.y))){
 				// Izquierda
-				this.dir_x *= (-1);
+				pelota.dir_x *= (-1);
 				reproducirSonido();
 			}
-			if((this.x + this.size >= jugador2.x) && (this.y >= jugador2.y && this.y <= (jugador2.largo + jugador2.y))){
+			if((pelota.x + pelota.size >= jugador2.x) && (pelota.y >= jugador2.y && pelota.y <= (jugador2.largo + jugador2.y))){
 				// Derecha
-				this.dir_x *= (-1);
+				pelota.dir_x *= (-1);
 				reproducirSonido();
 			}
-			if(this.x<0){
+			if(pelota.x<0){
 				marcador[1]++;
-				this.x=W/2;
-				this.y=generarNumero(0,H-this.size);
+				pelota.x=W/2;
+				pelota.y=generarNumero(0,H-pelota.size);
 			}
-			if(this.x>W-this.size){
+			if(pelota.x>W-pelota.size){
 				marcador[0]++;
-				this.x=W/2;
-				this.y=generarNumero(0,H-this.size);
+				pelota.x=W/2;
+				pelota.y=generarNumero(0,H-pelota.size);
 			}
 		}
 	}
@@ -111,7 +114,7 @@ window.onload=function(){
 		pelotita.dibujar();
 		pelotita.mover();
 	}
-	
+
 	//Control de paletas por medio del teclado por ASCII (tecla presionada y levantada)
 	function teclaPresionada(evento){
 		var codigo=evento.which;
