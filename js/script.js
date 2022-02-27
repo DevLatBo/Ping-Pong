@@ -52,14 +52,14 @@ window.onload=function(){
 		var pelota = this;
 		pelota.size=15;
 		pelota.x=W/2;
-		pelota.y=generarNumero(0,H-this.size);
+		pelota.y=generarNumero(0,H-pelota.size);
 		pelota.style="rgba(255,255,255,0.9)";
 		pelota.dir_x=generarNumero(0,1)==0?7:-7;
 		pelota.dir_y=generarNumero(0,1)==0?7:-7;
 		pelota.dibujar=function(){
 			ctx.beginPath();
-			ctx.fillStyle=this.style;
-			ctx.arc(this.x,this.y,this.size,10,0,Math.PI*2);
+			ctx.fillStyle=pelota.style;
+			ctx.arc(pelota.x,pelota.y,pelota.size,10,0,Math.PI*2);
 			ctx.fill();
 		};
 		pelota.mover=function(){
