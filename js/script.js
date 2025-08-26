@@ -31,14 +31,14 @@ window.onload=function(){
 		playerConfig.ancho 		=	60;
 		playerConfig.largo 		=	150;
 		playerConfig.x 			=	(lado=="izquierda") ? 0 : W-60;
-		playerConfig.y			=	generarNumero(0,H-playerConfig.largo);
+		playerConfig.y			=	generateNumber(0,H-playerConfig.largo);
 		playerConfig.color		=	"#FF0000";
 		playerConfig.recorrido	=	7;
-		playerConfig.dibujar	=	function(){
+		playerConfig.paint		=	function(){
 			ctx.fillStyle	=	playerConfig.color;
-			ctx.fillRect(playerConfig.x,playerConfig.y,playerConfig.ancho,playerConfig.largo);
+			ctx.fillRect(playerConfig.x, playerConfig.y, playerConfig.ancho, playerConfig.largo);
 		}
-		playerConfig.mover		=	function() {
+		playerConfig.move		=	function() {
 			if (playerConfig.lado == "izquierda") {
 				if (paddleDirection.p1.down){
 					playerConfig.y	=	(playerConfig.y<H-playerConfig.largo) ? playerConfig.y+playerConfig.recorrido : playerConfig.y;
@@ -61,23 +61,23 @@ window.onload=function(){
 		var ballConfig		= 	this;
 		ballConfig.size		=	15;
 		ballConfig.x		=	W/2;
-		ballConfig.y		=	generarNumero(0,H-ballConfig.size);
+		ballConfig.y		=	generateNumber(0,H-ballConfig.size);
 		ballConfig.style	=	"rgba(255, 255, 255, 0.9)";
-		ballConfig.dir_x	=	generarNumero(0,1) == 0 ? 7 : -7;
-		ballConfig.dir_y	=	generarNumero(0,1) == 0 ? 7 : -7;
-		ballConfig.dibujar	=	function(){
+		ballConfig.dir_x	=	generateNumber(0,1) == 0 ? 7 : -7;
+		ballConfig.dir_y	=	generateNumber(0,1) == 0 ? 7 : -7;
+		ballConfig.paint	=	function(){
 			ctx.beginPath();
 			ctx.fillStyle	=	ballConfig.style;
-			ctx.arc(ballConfig.x,ballConfig.y,ballConfig.size,10,0,Math.PI*2);
+			ctx.arc(ballConfig.x, ballConfig.y, ballConfig.size, 10, 0, Math.PI*2);
 			ctx.fill();
 		};
-		ballConfig.mover	=	function(){
+		ballConfig.move		=	function(){
 			ballConfig.x	=	ballConfig.x + ballConfig.dir_x;
 			ballConfig.y	=	ballConfig.y + ballConfig.dir_y;
-			if (ballConfig.y<0) {
+			if (ballConfig.y < 0) {
 				ballConfig.dir_y 	*= 	(-1);
 			}
-			if (ballConfig.y>H-ballConfig.size) {
+			if (ballConfig.y > H-ballConfig.size) {
 				ballConfig.dir_y	=	ballConfig.dir_y*(-1);
 			}
 			var jugador1 	= 	players[0];
@@ -93,20 +93,20 @@ window.onload=function(){
 				ballConfig.dir_x	*= 	(-1);
 				makeHitBallSound();
 			}
-			if (ballConfig.x<0) {
+			if (ballConfig.x < 0) {
 				scoreboard[1]++;
 				ballConfig.x	=	W/2;
-				ballConfig.y	=	generarNumero(0, H-pelota.size);
+				ballConfig.y	=	generateNumber(0, H-pelota.size);
 			}
-			if (ballConfig.x>W-ballConfig.size) {
+			if (ballConfig.x > W-ballConfig.size) {
 				scoreboard[0]++;
 				ballConfig.x	=	W/2;
-				ballConfig.y	=	generarNumero(0, H-ballConfig.size);
+				ballConfig.y	=	generateNumber(0, H-ballConfig.size);
 			}
 		}
 	}
 
-	function paintBoard(){
+	function paintBoard() {
 		ctx.globalCompositeOperation 	= 	"source-over";
 		ctx.fillStyle 					=	"#000000";
 		ctx.fillRect(0,0,W,H);
@@ -116,63 +116,64 @@ window.onload=function(){
 		ctx.fillText("" + scoreboard[0], 300, 100);
 		ctx.fillText("" + scoreboard[1], 1100, 100);
 
-		for(var i=0;i<players.length;i++){
-			players[i].dibujar();
-			players[i].mover();
+		for(var i=0;i<players.length;i++) {
+			players[i].paint();
+			players[i].move();
 		}
-		ball.dibujar();
-		ball.mover();
+		ball.paint();
+		ball.move();
 	}
 
 	//Control de paletas por medio del teclado por ASCII (tecla presionada y levantada)
-	function teclaPresionada(evento){
-		var codigo=evento.which;
-		switch(codigo){
+	function handleKeyDown(e) {
+		var code = e.which;
+		switch (code) {
 			case 79:
 				// Arriba jugador 2;
-				paddleDirection.p2.up = true;
+				paddleDirection.p2.up	= 	true;
 				break;
 			case 75:
 				// Abajo jugador 2;
-				paddleDirection.p2.down = true;
+				paddleDirection.p2.down	=	true;
 				break;
 			case 87:
 				// Arriba jugador 1;
-				paddleDirection.p1.up = true;
+				paddleDirection.p1.up 	=	true;
 				break;
 			case 83:
 				// Abajo jugador 1;
-				paddleDirection.p1.down = true;
+				paddleDirection.p1.down = 	true;
 				break;
 		}
 	}
-	function teclaLevantada(evento){
-		var codigo=evento.which;
-		switch(codigo){
+
+	function handleKeyUp(e) {
+		var code = e.which;
+		switch (code) {
 			case 79:
 				// Arriba jugador 2 [DETENIDO];
-				paddleDirection.p2.up = false;
+				paddleDirection.p2.up 	= 	false;
 				break;
 			case 75:
 				// Abajo jugador 2 [DETENIDO];
-				paddleDirection.p2.down = false;
+				paddleDirection.p2.down	= 	false;
 				break;
 			case 87:
 				// Arriba jugador 1 [DETENIDO];
-				paddleDirection.p1.up = false;
+				paddleDirection.p1.up 	= 	false;
 				break;
 			case 83:
 				// Abajo jugador 1 [DETENIDO]";
-				paddleDirection.p1.down = false;
+				paddleDirection.p1.down	=	false;
 				break;
 		}
 	}
 
-	function generarNumero(min,max){
+	function generateNumber(min,max) {
   		return Math.round(Math.random() * (max - min)) + min;
 	}
 
-	function makeHitBallSound(){
+	function makeHitBallSound() {
 		var audio = document.getElementById('hitBall');
 		if (audio.paused){
 			audio.play();
@@ -182,6 +183,6 @@ window.onload=function(){
 		}
 	}
 
-	document.addEventListener("keydown",teclaPresionada);
-	document.addEventListener("keyup",teclaLevantada);
+	document.addEventListener("keydown", handleKeyDown);
+	document.addEventListener("keyup", handleKeyUp);
 }
