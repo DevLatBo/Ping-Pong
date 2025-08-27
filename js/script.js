@@ -8,50 +8,50 @@ window.onload=function(){
 	canvas.height = H;
 
 	var players = [
-		new Player("izquierda"), 
-		new Player("derecha")
+		new Player("left"),
+		new Player("right")
 	];
 	var scoreboard = [0,0];
 	var paddleDirection = {
 		p1: {
-			up:false,
-			down:false
+			up: false,
+			down: false
 		},
 		p2: {
-			up:false,
-			down:false
+			up: false,
+			down: false
 		}
 	};
 	var ball = new Ball();
 	setInterval(paintBoard, 1);
 
-	function Player(lado){
+	function Player(side){
 		var playerConfig 		= 	this;
-		playerConfig.lado 		= 	lado;
-		playerConfig.ancho 		=	60;
-		playerConfig.largo 		=	150;
-		playerConfig.x 			=	(lado=="izquierda") ? 0 : W-60;
-		playerConfig.y			=	generateNumber(0,H-playerConfig.largo);
+		playerConfig.side 		= 	side;
+		playerConfig.width 		=	60;
+		playerConfig.padLength 	=	150;
+		playerConfig.x 			=	(side == "left") ? 0 : W - 60;
+		playerConfig.y			=	generateNumber(0, H - playerConfig.padLength);
 		playerConfig.color		=	"#FF0000";
-		playerConfig.recorrido	=	7;
+		playerConfig.velocity	=	6;
 		playerConfig.paint		=	function(){
 			ctx.fillStyle	=	playerConfig.color;
-			ctx.fillRect(playerConfig.x, playerConfig.y, playerConfig.ancho, playerConfig.largo);
+			ctx.fillRect(playerConfig.x, playerConfig.y, playerConfig.width, playerConfig.padLength);
 		}
 		playerConfig.move		=	function() {
-			if (playerConfig.lado == "izquierda") {
+			if (playerConfig.side == "left") {
 				if (paddleDirection.p1.down){
-					playerConfig.y	=	(playerConfig.y<H-playerConfig.largo) ? playerConfig.y+playerConfig.recorrido : playerConfig.y;
+					playerConfig.y	=	(playerConfig.y < H - playerConfig.padLength) ? playerConfig.y + playerConfig.velocity : playerConfig.y;
 				}
 				if (paddleDirection.p1.up) {
-					playerConfig.y	=	(playerConfig.y>0) ? playerConfig.y - playerConfig.recorrido : playerConfig.y;
+					playerConfig.y	=	(playerConfig.y>0) ? playerConfig.y - playerConfig.velocity : playerConfig.y;
 				}
 			} else {
 				if (paddleDirection.p2.down) {
-					playerConfig.y	=	(playerConfig.y<H-playerConfig.largo) ? playerConfig.y+playerConfig.recorrido : playerConfig.y;
+					playerConfig.y	=	(playerConfig.y < H - playerConfig.padLength) ? playerConfig.y + playerConfig.velocity : playerConfig.y;
 				}
 				if (paddleDirection.p2.up) {
-					playerConfig.y	=	(playerConfig.y>0) ? playerConfig.y - playerConfig.recorrido : playerConfig.y;
+					playerConfig.y	=	(playerConfig.y > 0) ? playerConfig.y - playerConfig.velocity : playerConfig.y;
 				}
 			}
 		}
@@ -80,15 +80,15 @@ window.onload=function(){
 			if (ballConfig.y > H-ballConfig.size) {
 				ballConfig.dir_y	=	ballConfig.dir_y*(-1);
 			}
-			var jugador1 	= 	players[0];
-			var jugador2 	= 	players[1];
+			var player1 	= 	players[0];
+			var player2 	= 	players[1];
 			
-			if ((ballConfig.x - ballConfig.size < (jugador1.x + jugador1.ancho)) && (ballConfig.y >= jugador1.y && ballConfig.y <= (jugador1.largo + jugador1.y))) {
+			if ((ballConfig.x - ballConfig.size < (player1.x + player1.width)) && (ballConfig.y >= player1.y && ballConfig.y <= (player1.padLength + player1.y))) {
 				// Izquierda
 				ballConfig.dir_x	*=	(-1);
 				makeHitBallSound();
 			}
-			if ((ballConfig.x + ballConfig.size >= jugador2.x) && (ballConfig.y >= jugador2.y && ballConfig.y <= (jugador2.largo + jugador2.y))) {
+			if ((ballConfig.x + ballConfig.size >= player2.x) && (ballConfig.y >= player2.y && ballConfig.y <= (player2.padLength + player2.y))) {
 				// Derecha
 				ballConfig.dir_x	*= 	(-1);
 				makeHitBallSound();
