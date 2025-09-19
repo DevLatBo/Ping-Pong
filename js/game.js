@@ -7,6 +7,16 @@ window.onload=function(){
 	canvas.width = W;
 	canvas.height = H;
 
+	// Half of the screen width.
+	const halfW = W / 2;
+
+	// Half of half of the width screen.
+	const quarterW = halfW / 2;
+
+	// Half plus half of half of the width screen (three-quarters).
+	const threeQuarterW = halfW + quarterW;
+
+
 	var players = [
 		new Player("left"),
 		new Player("right")
@@ -111,12 +121,12 @@ window.onload=function(){
 		ctx.fillStyle 					=	"#000000";
 		ctx.fillRect(0,0,W,H);
 
-		ctx.font						=	"120px Helvetica";
+		ctx.font						=	"80px Helvetica";
 		ctx.fillStyle					=	"#FFFFFF";
-		ctx.fillText("" + scoreboard[0], 300, 100);
-		ctx.fillText("" + scoreboard[1], 1100, 100);
+		ctx.fillText("" + scoreboard[0], quarterW, 100);
+		ctx.fillText("" + scoreboard[1], threeQuarterW, 100);
 
-		for(var i=0;i<players.length;i++) {
+		for (var i = 0; i < players.length; i++) {
 			players[i].paint();
 			players[i].move();
 		}
