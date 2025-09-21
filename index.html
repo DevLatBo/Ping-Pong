@@ -1,67 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html class="home-page">
 <head>
 	<title>PING PONG</title>
-	<style>
-		body {
-			background-color: #000000;
-			margin: 0;
-			height: 100vh; 
-		}
-		.container {
-			width: 100%;
-			height: 100vh;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		.button-container {
-			width: 40%;
-			display: flex;
-			justify-content: space-between;
-		}
-		.button-container a {
-			width: 45%;
-			height: 100px;
-			display: flex;  /* flex para centrar texto */
-			align-items: center; /* centra vertical */
-			justify-content: center;
-			box-sizing: border-box;
-			-webkit-appearance: none;
-				-moz-appearance: none;
-					appearance: none;
-			background-color: transparent;
-			border: 2px solid #FF1744;
-			border-radius: 0.6em;
-			color: #FFFFFF;
-			cursor: pointer;
-			-webkit-align-self: center;
-				-ms-flex-item-align: center;
-					align-self: center;
-			font-size: 1.2rem;
-			font-weight: 400;
-			line-height: 1;
-			margin: 20px;
-			padding: 1.2em;
-			text-decoration: none;
-			text-align: center;
-			text-transform: uppercase;
-			font-family: 'Montserrat', sans-serif;
-			font-weight: 700;
-		}
-		.button-container a.btn {
-			border-color: #FF1744;
-			color: #FFFFFF;
-			box-shadow: 0 0 100px 100px #FF1744 inset, 0 0 0 0 #FF1744;
-			-webkit-transition: all 150ms ease-in-out;
-			transition: all 150ms ease-in-out;
-		}
-		.button-container a:hover {
-  			box-shadow: 0 0 10px 0 #FF1744 inset, 0 0 10px 4px #FF1744;
-		}
-	</style>
+	<link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body class="home-body">
 	<div class="container">
 		<div class="button-container">
 			<a href="./game.html" class="btn btn-play" id="btn-play">Jugar</a>
