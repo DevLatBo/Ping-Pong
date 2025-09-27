@@ -73,8 +73,8 @@ window.onload=function(){
 		ballConfig.x		=	W/2;
 		ballConfig.y		=	generateNumber(0,H-ballConfig.size);
 		ballConfig.style	=	"rgba(255, 255, 255, 0.9)";
-		ballConfig.dir_x	=	generateNumber(0,1) == 0 ? 7 : -7;
-		ballConfig.dir_y	=	generateNumber(0,1) == 0 ? 7 : -7;
+		ballConfig.dir_x	=	generateNumber(0,1) == 0 ? 1 : -1;
+		ballConfig.dir_y	=	generateNumber(0,1) == 0 ? 1 : -1;
 		ballConfig.paint	=	function(){
 			ctx.beginPath();
 			ctx.fillStyle	=	ballConfig.style;
@@ -84,29 +84,33 @@ window.onload=function(){
 		ballConfig.move		=	function(){
 			ballConfig.x	=	ballConfig.x + ballConfig.dir_x;
 			ballConfig.y	=	ballConfig.y + ballConfig.dir_y;
-			if (ballConfig.y < 0) {
-				ballConfig.dir_y 	*= 	(-1);
+			
+			// If the ball bounces off the top or bottom of the screen.
+			if (ballConfig.y < 0 || ballConfig.y > H - ballConfig.size) {
+				ballConfig.dir_y	 	*= 	(-1);
 			}
-			if (ballConfig.y > H-ballConfig.size) {
-				ballConfig.dir_y	=	ballConfig.dir_y*(-1);
-			}
+
 			var player1 	= 	players[0];
 			var player2 	= 	players[1];
-			
-			if ((ballConfig.x - ballConfig.size < (player1.x + player1.width)) && (ballConfig.y >= player1.y && ballConfig.y <= (player1.padLength + player1.y))) {
-				// Izquierda
+			if (
+				(ballConfig.x - ballConfig.size < (player1.x + player1.width)) && 
+				(ballConfig.y >= player1.y && ballConfig.y <= (player1.padLength + player1.y))
+			) {
+				// Goes to the right
 				ballConfig.dir_x	*=	(-1);
 				makeHitBallSound();
 			}
-			if ((ballConfig.x + ballConfig.size >= player2.x) && (ballConfig.y >= player2.y && ballConfig.y <= (player2.padLength + player2.y))) {
-				// Derecha
+			if (
+				(ballConfig.x + ballConfig.size >= player2.x) && 
+				(ballConfig.y >= player2.y && ballConfig.y <= (player2.padLength + player2.y))) {
+				// Goes to the left
 				ballConfig.dir_x	*= 	(-1);
 				makeHitBallSound();
 			}
 			if (ballConfig.x < 0) {
 				scoreboard[1]++;
 				ballConfig.x	=	W/2;
-				ballConfig.y	=	generateNumber(0, H-pelota.size);
+				ballConfig.y	=	generateNumber(0, H - ballConfig.size);
 			}
 			if (ballConfig.x > W-ballConfig.size) {
 				scoreboard[0]++;
