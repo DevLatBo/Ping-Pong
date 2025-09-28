@@ -4,6 +4,8 @@ window.onload=function(){
 		ctx = canvas.getContext("2d"),
 		W = window.innerWidth,
 		H = window.innerHeight;
+		passedPaddleLimit = false
+
 	canvas.width = W;
 	canvas.height = H;
 
@@ -73,8 +75,8 @@ window.onload=function(){
 		ballConfig.x		=	W/2;
 		ballConfig.y		=	generateNumber(0,H-ballConfig.size);
 		ballConfig.style	=	"rgba(255, 255, 255, 0.9)";
-		ballConfig.dir_x	=	generateNumber(0,1) == 0 ? 1 : -1;
-		ballConfig.dir_y	=	generateNumber(0,1) == 0 ? 1 : -1;
+		ballConfig.dir_x	=	generateNumber(0,1) == 0 ? 5 : -5;
+		ballConfig.dir_y	=	generateNumber(0,1) == 0 ? 5 : -5;
 		ballConfig.paint	=	function(){
 			ctx.beginPath();
 			ctx.fillStyle	=	ballConfig.style;
@@ -86,7 +88,7 @@ window.onload=function(){
 			ballConfig.y	=	ballConfig.y + ballConfig.dir_y;
 			
 			// If the ball bounces off the top or bottom of the screen.
-			if (ballConfig.y < 0 || ballConfig.y > H - ballConfig.size) {
+			if (ballConfig.y - ballConfig.size < 0 || ballConfig.y > H - ballConfig.size) {
 				ballConfig.dir_y	 	*= 	(-1);
 			}
 
@@ -97,25 +99,41 @@ window.onload=function(){
 				(ballConfig.y >= player1.y && ballConfig.y <= (player1.padLength + player1.y))
 			) {
 				// Goes to the right
+				console.log("golpeo paleta izquierda");
 				ballConfig.dir_x	*=	(-1);
 				makeHitBallSound();
 			}
+			console.log(passedPaddleLimit);
+			/*ballConfig.dir_y *= (-1);
+					var test = player1.padLength+player1.y;
+					console.log(ballConfig.y +" ("+player1.y+','+test+")");*/
+			/*if(ballConfig.x - ballConfig.size >= player1.x && ballConfig.x <= player1.x + player1.width) {
+				if(ballConfig.y >= player1.y) {
+					if(!passedPaddleLimit) {
+						ballConfig.dir_y *= (-1);
+						passedPaddleLimit = true;
+					}
+				}
+			}*/
 			if (
 				(ballConfig.x + ballConfig.size >= player2.x) && 
 				(ballConfig.y >= player2.y && ballConfig.y <= (player2.padLength + player2.y))) {
 				// Goes to the left
+				console.log("golpeo paleta derecha");
 				ballConfig.dir_x	*= 	(-1);
 				makeHitBallSound();
 			}
 			if (ballConfig.x < 0) {
 				scoreboard[1]++;
-				ballConfig.x	=	W/2;
-				ballConfig.y	=	generateNumber(0, H - ballConfig.size);
+				ballConfig.x		=	W/2;
+				ballConfig.y		=	generateNumber(0, H - ballConfig.size);
+				passedPaddleLimit 	= 	false;
 			}
 			if (ballConfig.x > W-ballConfig.size) {
 				scoreboard[0]++;
-				ballConfig.x	=	W/2;
-				ballConfig.y	=	generateNumber(0, H-ballConfig.size);
+				ballConfig.x		=	W/2;
+				ballConfig.y		=	generateNumber(0, H-ballConfig.size);
+				passedPaddleLimit 	= 	false;
 			}
 		}
 	}
