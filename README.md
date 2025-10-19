@@ -20,6 +20,8 @@ Toda la interfaz que se puede observar en el juego es usando canvas con Javascri
 gracias a el, pintamos las paletas (rectángulos verticales en lados laterales), pelota (circulo) y 
 marcador.
 
+Se ha validado los rebotes, velocidad e interfaz (canvas), movimiento de paletas y pelota en caso de que cruce límites.
+
 Este juego puede jugarlo dos personas únicamente desde teclado:
 Paletas es controlado bajo teclado:
 **Lado izquierdo:** Arriba (Tecla w), Abajo (Tecla s).
