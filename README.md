@@ -13,6 +13,9 @@ Juego simple y retro de Ping Pong que incluye:
 ### Especificaciones Tecnicas
 
 Este juego básico de Ping Pong está trabajado únicamente con JavaScript, HTML y CSS.
+Se ha trabajado en una primera pantalla que incluye dos botones en el cual el primero es para que 
+el usuario pueda iniciar el juego y otro pueda salir de la pagina redirigiendolo a Google.
+
 Toda la interfaz que se puede observar en el juego es usando canvas con Javascript ya que 
 gracias a el, pintamos las paletas (rectángulos verticales en lados laterales), pelota (circulo) y 
 marcador.
