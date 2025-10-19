@@ -1,39 +1,39 @@
 window.onload = function () {
-  // --- Validaciones básicas del canvas/contexto ---
+  // Canvas basic validation.
   const canvas = document.getElementById("canvas");
   if (!canvas) {
-    console.error("No se encontró el <canvas id='canvas'>");
+    console.error("Error: <canvas id='canvas'> Not found.");
     return;
   }
   const ctx = canvas.getContext("2d");
   if (!ctx) {
-    console.error("Tu navegador no soporta canvas 2D.");
+    console.error("Error: Browser doesn't support canvas 2D.");
     return;
   }
 
-  // Tamaño inicial
+  // Sizes definition (Screen and canvas).
   let W = window.innerWidth;
   let H = window.innerHeight;
   canvas.width = W;
   canvas.height = H;
 
-  // Métricas para el marcador (se recalculan en resize)
+  // Defining auxiliar variables.
   let halfW = W / 2;
   let quarterW = halfW / 2;
   let threeQuarterW = halfW + quarterW;
 
-  // ---------- Constantes de física/ángulos ----------
-  const BALL_BASE_SPEED  = 12;                     // velocidad base de la bola
-  const MAX_BOUNCE_ANGLE = Math.PI * 60 / 180;    // 60° máximo de rebote
-  const MIN_HORIZ_COS    = 0.4;                   // evita saques casi verticales (|cos(θ)| muy chico)
-  const SPEED_BOOST      = 1.15;                  // 10% más rápido en cada golpe (ajústalo o ponlo en 1 para desactivar)
-  const MAX_SPEED        = 18;                    // límite superior opcional
+  // ---------- Physics contact/Angle ----------
+  const BALL_BASE_SPEED  = 12;                    // Velocity.
+  const MAX_BOUNCE_ANGLE = Math.PI * 60 / 180;    // 60° bounce angle.
+  const MIN_HORIZ_COS    = 0.4;                   // avoid almost vertical serves (|cos(θ)| very small.
+  const SPEED_BOOST      = 1.15;                  // Increases 10% everytime hits the paddle (if you set to 1, it is not to increase the speed).
+  const MAX_SPEED        = 18;                    // limit max speed.
 
-  // ---- Utilidades ----
+  // ---- Auxiliar functions ----
   function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
   function randInt(min, max) { return Math.round(Math.random() * (max - min)) + min; }
 
-  // Recalcular en resize (mejora UX)
+  // Recalculates resizes if the window changes its dimensions. (improves UX).
   window.addEventListener("resize", () => {
     W = window.innerWidth;
     H = window.innerHeight;
@@ -42,14 +42,14 @@ window.onload = function () {
     halfW = W / 2;
     quarterW = halfW / 2;
     threeQuarterW = halfW + quarterW;
-    // Evita que queden fuera de rango al cambiar dimensiones
+    // Prevents them from going out of range when changing dimensions.
     players.forEach(p => {
       if (p.y + p.padLength > H) p.y = Math.max(0, H - p.padLength);
       if (p.side === "right") p.x = Math.max(0, W - p.width);
     });
   });
 
-  // ---- Estado del juego ----
+  // ---- Game Status. ----
   const players = [ new Player("left"), new Player("right") ];
   const scoreboard = [0, 0];
   const paddleDirection = {
@@ -57,20 +57,20 @@ window.onload = function () {
     p2: { up: false, down: false }
   };
   const ball = new Ball();
-  ball.reset(); // saque inicial aleatorio
+  ball.reset(); // random start.
 
-  // ---- Bucle principal ----
-  let lastTime = 0;
+  // ---- Principal loop. ----
+  //let lastTime = 0;
   function loop(ts) {
-    const dt = ts - lastTime; // reservado por si quieres física dependiente de tiempo
-    lastTime = ts;
+    /*const dt = ts - lastTime; // In case you want time-dependent physics.
+    lastTime = ts;*/
 
     paintBoard();
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
 
-  // ---- Definiciones ----
+  // ---- Definitions. ----
   function Player(side) {
     const self = this;
     self.side = side;
@@ -106,11 +106,12 @@ window.onload = function () {
     self.dir_x = 0;
     self.dir_y = 0;
 
-    // Saque aleatorio hacia cualquier lado, evitando quedar casi vertical
+    // Random direction, avoids the vertical direction.
     self.randomServe = function () {
-      const toRight = randInt(0, 1) === 0; // true => derecha
+      const toRight = randInt(0, 1) === 0; // true => right
       let angle;
-      // Ángulo aleatorio entre -MAX y +MAX, filtrando |cos| pequeño
+
+      // Random angle bewteen -MAX and +MAX, filtering small |cos|.
       do {
         angle = (Math.random() * 2 - 1) * MAX_BOUNCE_ANGLE; // [-MAX, +MAX]
       } while (Math.abs(Math.cos(angle)) < MIN_HORIZ_COS);
@@ -140,23 +141,23 @@ window.onload = function () {
       const p1 = players[0];
       const p2 = players[1];
 
-      // Rebote vertical con radio
+      // Vertical bounce with Radio.
       if (self.y - self.size <= 0 || self.y + self.size >= H) {
         self.dir_y *= -1;
         self.y = clamp(self.y, self.size, H - self.size);
       }
 
-      // Goles (se fue más allá del área de cada paleta)
-      if (self.x + self.size < p1.x) { // punto para la derecha
+      // Goles (it goes away from the palette limit.)
+      if (self.x + self.size < p1.x) { // Player 1 scores.
         scoreboard[1]++;
         self.reset();
       }
-      if (self.x - self.size > p2.x + p2.width) { // punto para la izquierda
+      if (self.x - self.size > p2.x + p2.width) { // Player 2 scores.
         scoreboard[0]++;
         self.reset();
       }
 
-      // --- Colisión con paleta izquierda (p1) ---
+      // --- Left pallete collision (p1). ---
       if (
         self.x - self.size <= p1.x + p1.width &&
         self.x > p1.x &&
@@ -167,23 +168,23 @@ window.onload = function () {
         let rel = (self.y - pCenter) / (p1.padLength / 2); // [-1, 1]
         rel = clamp(rel, -1, 1);
 
-        // Ángulo de rebote según impacto
+        // Bounce angle according to the impact.
         const bounceAngle = rel * MAX_BOUNCE_ANGLE;
 
-        // Aumenta ligeramente la velocidad y limita
+        // It increases the velocity and it limits.
         self.speed = Math.min(self.speed * SPEED_BOOST, MAX_SPEED);
 
-        // Recalcula componentes con el nuevo ángulo (hacia la derecha)
+        // Recalculates the components with a new angle (to the right).
         self.dir_x = Math.cos(bounceAngle) * self.speed;
         self.dir_y = Math.sin(bounceAngle) * self.speed;
 
-        // Evita quedar “dentro” de la paleta
+        // Avoid to be inside the pallete area.
         self.x = p1.x + p1.width + self.size;
 
         makeHitBallSound();
       }
 
-      // --- Colisión con paleta derecha (p2) ---
+      // --- Right pallete collision (p2). ---
       if (
         self.x + self.size >= p2.x &&
         self.x < p2.x + p2.width &&
@@ -198,7 +199,7 @@ window.onload = function () {
 
         self.speed = Math.min(self.speed * SPEED_BOOST, MAX_SPEED);
 
-        // Hacia la izquierda: invierte componente X
+        // Goes to the left: reverts X component.
         self.dir_x = -Math.cos(bounceAngle) * self.speed;
         self.dir_y =  Math.sin(bounceAngle) * self.speed;
 
@@ -231,7 +232,7 @@ window.onload = function () {
     ball.move();
   }
 
-  // ---- Controles teclado ----
+  // ---- Key Control. ----
   function handleKeyDown(e) {
     const code = e.which || e.keyCode;
     switch (code) {
@@ -267,7 +268,7 @@ window.onload = function () {
     }
   }
 
-  // ---- Sonido con validación ----
+  // ---- Sound validation. ----
   function makeHitBallSound() {
     const audio = document.getElementById("hitBall");
     if (!audio) return;
@@ -279,7 +280,7 @@ window.onload = function () {
         audio.currentTime = 0;
       }
     } catch (_) {
-      // Silencioso si el navegador bloquea autoplay
+      // Silent if the browser blocks autoplay.
     }
   }
 
